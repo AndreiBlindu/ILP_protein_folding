@@ -60,16 +60,19 @@ def plot_folding(protein_binary_sequence, protein_sequence, positions, d):
 def is_adjacent(i, j, u, v):
     return ( u == i and abs(v-j) == 1 ) or ( v == j and abs(u-i) == 1 )
 
-def build_graph(binary_seq):
+def distance(i, j, u, v):
+    return ( abs(u - i) + abs(v - j) )
+
+def build_graph(binary_seq, grid_size, reduced):
     G = nx.Graph()
 
     n = len(binary_seq)
-    grid_size = 2*n - 1
 
     # add nodes
     for i in range(grid_size):
         for j in range(i, grid_size):
-                G.add_node( (i, j) )
+                if distance(i, j, n, n) <= n or not(reduced):
+                    G.add_node( (i, j) )
 
     # add edges
     for i, j in G.nodes():
@@ -78,3 +81,28 @@ def build_graph(binary_seq):
                    G.add_edge( (i, j), (u, v) )
     
     return G
+
+def same_parity(a, b):
+    parity_a = a % 2
+    parity_b = b % 2
+    if (abs(parity_a - parity_b) % 2) == 0:
+        return True
+    else:
+        return False
+    
+def get_neighbours(G, i, j, t, reduced):
+    neighbours = []
+    for (u, v) in G.nodes():
+        d = distance(i, j, u, v)
+        if d <= t and (same_parity(d, t) or not(reduced)): # consider same_parity condition only if reduced=True
+            neighbours.append((u, v))
+    return neighbours
+
+def grid_positions_from_optimal(x):
+    positions = []
+    for k in range(len(x)):
+        for i in range(len(x[k])):
+            for j in range(len(x[k][i])):
+                if x[k][i][j] == 1:
+                    positions.append((i, j))
+    return positions
