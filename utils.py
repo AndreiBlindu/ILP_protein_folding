@@ -98,24 +98,6 @@ def get_neighbours(G, i, j, t, reduced):
             neighbours.append((u, v))
     return neighbours
 
-#########
-def get_even_distance_vertices(G, i, j):
-    even_vertices = []
-    for (u, v) in G.nodes():
-        d = distance(i, j, u, v)
-        if d % 2:
-            even_vertices.append((u,v))
-    return even_vertices
-
-def get_odd_distance_vertices(G, i, j):
-    odd_vertices = []
-    for (u, v) in G.nodes():
-        d = distance(i, j, u, v)
-        if d % 2 == 1:
-            odd_vertices.append((u,v))
-    return odd_vertices
-##########
-
 def grid_positions_from_optimal(x):
     positions = []
     for k in range(len(x)):
