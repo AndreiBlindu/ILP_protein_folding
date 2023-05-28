@@ -63,7 +63,7 @@ def is_adjacent(i, j, u, v):
 def distance(i, j, u, v):
     return ( abs(u - i) + abs(v - j) )
 
-def build_graph(binary_seq, grid_size):
+def build_graph(binary_seq, grid_size, reduced):
     G = nx.Graph()
 
     n = len(binary_seq)
@@ -71,7 +71,8 @@ def build_graph(binary_seq, grid_size):
     # add nodes
     for i in range(grid_size):
         for j in range(i, grid_size):
-                G.add_node( (i, j) )
+                if distance(i, j, n, n) <= n or not(reduced):
+                    G.add_node( (i, j) )
 
     # add edges
     for i, j in G.nodes():
@@ -89,11 +90,11 @@ def same_parity(a, b):
     else:
         return False
     
-def get_neighbours(G, i, j, t):
+def get_neighbours(G, i, j, t, reduced):
     neighbours = []
     for (u, v) in G.nodes():
         d = distance(i, j, u, v)
-        if d <= t and same_parity(d, t):
+        if d <= t and (same_parity(d, t) or not(reduced)): # consider same_parity condition only if reduced=True
             neighbours.append((u, v))
     return neighbours
 

@@ -1,3 +1,5 @@
+import numpy as np
+
 def get_even_indices(n):
     Ie = []
     for i in range(n):
@@ -37,3 +39,24 @@ def neighboring_set_3d(v, l_size):
             n_set.append(k)
     
     return n_set
+
+def convert_1d_to_3d(v, l_size):
+    l2 = l_size*l_size
+    return (v % l_size, v % l2 // l_size, v // l2)
+
+def lattice_positions_from_optimal(X, l_size):
+    x_positions = []
+    y_positions = []
+    z_positions = []
+    positions = []
+    pos = []
+    for i in range(len(X)):
+        for v in range(len(X[i])):
+            if X[i][v] == 1:
+                x, y, z = convert_1d_to_3d(v, l_size)
+                x_positions.append(x)
+                y_positions.append(y)
+                z_positions.append(z)
+                positions.append((x,y,z))
+                pos.append(v)
+    return np.asarray(x_positions), np.asarray(y_positions), np.asarray(z_positions), np.asarray(positions), np.asarray(pos)
