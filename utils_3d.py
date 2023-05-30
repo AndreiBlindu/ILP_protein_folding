@@ -21,11 +21,13 @@ def get_HP_indices(seq, polarity, parity):
             indices.append(idx)
     return indices
 
-def get_feasible_set(m, n):
+def get_feasible_set(m, n, l_size):
     E = []
+    l2 = l_size*l_size
     for v in range(m):
         for w in range(m):
-            if w == v-1 or w == v+1 or w == v-n or w == v+n:
+            #if w == v-1 or w == v+1 or w == v-n or w == v+n:
+            if (w == v-1 and (w+1)%l_size != 0) or (w == v+1 and w%l_size != 0) or (w == v-l_size and w // l2 == v // l2) or (w == v+l_size and w // l2 == v // l2) or w == v+l2 or w == v-l2:
                 E.append((v,w))
     return E
 
