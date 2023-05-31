@@ -1,5 +1,4 @@
 # Interger Linear Programming for Protein Folding
-In this notebook, we show different integer linear programming (ILP) models for solving semplified versions of the protein folding problem.  
 Predicting the three-dimensional structure of a protein, given its amino acid sequence, is a critical task in biochemistry and computational biology since it can help to better understand some diseases and the development of new drugs.
 Since the search space is huge brute force is not an option and atomic-level modeling is computationally prohibitive, so many simplified models and approaches have been developed during the years. One of particular interest is the HP model.
 
