@@ -233,7 +233,7 @@
 \subsection{Formulation}
 
 \begin{frame}
-	\frametitle{Formulation}
+	\frametitle{2D Formulation}
 	\framesubtitle{Notation} % Optional subtitle
 
  \noindent
@@ -253,123 +253,339 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Formulation}
+	\frametitle{2D Formulation}
 	\framesubtitle{Notation} % Optional subtitle
 
-        \begin{minipage}{0.45\linewidth}
 	       \begin{itemize}
                     \item \emph{Connected neighbours}: pair of amino acids that occure in successive positions in the chain
                     \item \emph{Topological neighbours}: pair of non-successive amino acids that are adjacent in the embedding
-	    
+                    \item Define grid graph $ G = (V,E) $ where every edge is of the form $ ((i,j),(u,v)) $ where $ (u,v) \in N_{ij} $ with $ 1 \leq i,j \leq 2n-1 $
+                    \item First amino acid $ s_1 $ is placed at the center of the grid $ (n,n) $
 	       \end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{2D Formulation}
+	\framesubtitle{Decision variables} % Optional subtitle
+
+	    $$ x_{ij}^{k} =
+                \begin{cases}
+                    1 & \text{if $ s_k $ is placed on $ (i,j) $}\\
+                    0 & \text{otherwise}
+                \end{cases}   
+            $$
+            $$ y_{ij}^{uv} =
+                \begin{cases}
+                    1 & \text{if $ s_{a},s_{b} \in H $ are placed on $ (i,j) $ and $ (u,v) $ s.t. $ (u,v) \in N_{ij} $}\\
+                    0 & \text{otherwise}
+                \end{cases}   
+            $$
+\end{frame}
+
+\begin{frame}
+	\frametitle{2D Formulation}
+	\framesubtitle{Objective function} % Optional subtitle
+
+        \begin{block}{Goal}
+            Place the amino acids on the vertices so that the number of topologically adjacent H amino acids is maximized 
+        \end{block}
+
+        \begin{block}{Objective function}
+            $$ max \sum_{((i,j),(u,v)) \in E} { y_{ij}^{uv} } $$
+        \end{block}
+	    
+\end{frame}
+
+\begin{frame}
+	\frametitle{2D Formulation}
+	\framesubtitle{Constraints} % Optional subtitle
+
+        \begin{equation}
+		x_{nn}^1 = 1
+	\end{equation}
+        \begin{equation}
+		\sum_{k=1}^{n} {x_{ij}^{k}} \leq 1 \quad \forall (i,j) \quad 1 \leq i,j \leq 2n-1
+	\end{equation}
+        \begin{equation}
+		\sum_{i=1}^{2n-1} {\sum_{j=1}^{2n-1} {x_{ij}^{k}}} = 1 \quad \forall k \quad 1 \leq k \leq n
+	\end{equation}
+        \begin{equation}
+		x_{ij}^{k} \leq \sum_{(u,v) \in N_{ij}} { x_{uv}^{k+1} } \quad \forall (i,j), 1 \leq i,j \leq 2n-1 \quad \forall k, 1 \leq k \leq n-1
+	\end{equation}
+	    
+\end{frame}
+
+\begin{frame}
+	\frametitle{2D Formulation}
+	\framesubtitle{Constraints} % Optional subtitle
+
+        \begin{equation}
+		y_{ij}^{uv} \leq \sum_{k \in H} { x_{ij}^{k} } \quad \forall ((i,j),(u,v))
+	\end{equation}
+        \begin{equation}
+		y_{ij}^{uv} \leq \sum_{k \in H} { x_{uv}^{k} } \quad \forall ((i,j),(u,v))
+	\end{equation}
+        \begin{equation}
+		x_{ij}^{k} \quad \text{binary}
+	\end{equation}
+        \begin{equation}
+		y_{ij}^{uv} \quad \text{binary}
+	\end{equation}
+	    
+\end{frame}
+
+\begin{frame}
+	\frametitle{2D Formulation}
+	\framesubtitle{Additional constraints} % Optional subtitle
+
+        Instead of just restricting the positions of neighbours amino acid $ s_k $ and $ s_{k+1} $, let's restrict the positions of $ s_k $ and $ s_{k+t} $ ($ s_{k-t} $) at distance $ t $.
+        The distance between two vertices is defined as $ d_{ij}^{uv} = |u-i| + |v-j| $ \\
+        The usefulness of these constraints still have to be explored
+	    
+\end{frame}
+
+\begin{frame}
+	\frametitle{2D Formulation}
+	\framesubtitle{Additional constraints} % Optional subtitle
+
+        \begin{equation}
+            x_{ij}^{k} \leq \sum_{(u,v) : d_{ij}^{uv} \leq t} { x_{uv}^{k+t} } \quad \forall (i,j) \quad 1 \leq i,j \leq 2n-1 \quad \forall k \quad 1 \leq k \leq n-t
+        \end{equation}
+        \begin{equation}
+            x_{ij}^{k} \leq \sum_{(u,v) : d_{ij}^{uv} \leq t} { x_{uv}^{k-t} } \quad \forall (i,j) \quad 1 \leq i,j \leq 2n-1 \quad \forall k \quad t+1 \leq k \leq n
+        \end{equation}
+	    
+\end{frame}
+
+%------------------------------------------------
+
+\subsection{Computational results}
+
+\begin{frame}
+	\frametitle{Computational results}
+	
+	
+\end{frame}
+
+%------------------------------------------------
+
+%------------------------------------------------
+
+\subsection{Grid size reduction}
+
+\begin{frame}
+	\frametitle{Grid size reduction}
+
+        A method to reduce the number of variables and speedup the computation is to reduce the size of the grid by considering a grid of vertices $ (i,j) $ such that  
+        $$ n-p \leq i \leq 2n-1 \quad\text{and}\quad n-p \leq j \leq n+p \quad\text{where}\quad p = \frac{n}{2} $$
+        Since we know that $ s_{1} $ is placed at vertex $ (n,n) $ and all vertices having $ d_{nn}^{uv} > n $ can be removed from the grid. \\
+        As shown later, this actually reduces the number of variables and the computational time. 
+	
+\end{frame}
+
+%------------------------------------------------
+
+%------------------------------------------------
+
+\subsection{Alternative formulation}
+
+\begin{frame}
+	\frametitle{Alternative formulation}
+	
+	Instead of anchoring the first amino acid $ s_{1} $ to the center of the grid $ (n,n) $ we just require that it is placed somewhere with the     constraint:
+    $$ \sum_{i} { \sum_{j} { x_{ij}^{k} } } = 1 $$
+    Moreover, in this case we only require a $ n*n $ grid. The disadvantage is that with this formulation we cannot eliminate variables like before. Hence, we expect it to be slower than the previous cases.
+\end{frame}
+
+%------------------------------------------------
+
+%------------------------------------------------
+
+\subsection{Model comparison}
+
+\begin{frame}
+	\frametitle{Model comparison}
+	
+	
+\end{frame}
+
+%------------------------------------------------
+
+\section{Protein folding with 3D-HP side chain model}
+
+\subsection{Formulation}
+
+\begin{frame}
+	\frametitle{3D Formulation}
+        \framesubtitle{Introduction} % Optional subtitle
+
+        \begin{minipage}{0.45\linewidth}
+        \begin{itemize}
+            \item In the 3D-HP model each amino acid has a backbone and a side chain
+            \item All elements occupy only one position in a cubic lattice
+            \item The side chain is positioned in the neighbourhood of its backbone
+        \end{itemize}
         \end{minipage}%
         \hfill
 \end{frame}
 
-%------------------------------------------------
-
-\subsection{Figure}
-
 \begin{frame}
-	\frametitle{Figure}
-	
-	\begin{figure}
-		\includegraphics[width=0.8\linewidth]{creodocs_logo.pdf}
-		\caption{Creodocs logo.}
-	\end{figure}
+	\frametitle{3D Formulation}
+        \framesubtitle{Notation} % Optional subtitle
+
+        \begin{itemize}
+            \item $ S $ : binary string with length n
+            \item $ S_{i} = \{0,1\} $ : element of string which is 1 if the side chain associated with the backbone is H and 0 otherwise
+            \item $ I = \{1, ..., n\} $ : set of indices of $ S $
+            \item $ L = \{1, ..., m\} $ : set of indices of the cubic lattice vertices
+            \item $ I_{e} $ : set of even indices in $ I $
+            \item $ I_{o} $ : set of odd indices in $ I $
+            \item $ I = I_{e} \cup I_{o} $
+        \end{itemize}
 \end{frame}
 
-%------------------------------------------------
-
-\section{Mathematics}
-
 \begin{frame}
-	\frametitle{Definitions \& Examples}
-	
-	\begin{definition}
-		A \alert{prime number} is a number that has exactly two divisors.
-	\end{definition}
-	
-	\smallskip % Vertical whitespace
-	
-	\begin{example}
-		\begin{itemize}
-			\item 2 is prime (two divisors: 1 and 2).
-			\item 3 is prime (two divisors: 1 and 3).
-			\item 4 is not prime (\alert{three} divisors: 1, 2, and 4).
-		\end{itemize}
-	\end{example}
-	
-	\smallskip % Vertical whitespace
-	
-	You can also use the \texttt{theorem}, \texttt{lemma}, \texttt{proof} and \texttt{corollary} environments.
+	\frametitle{3D Formulation}
+        \framesubtitle{Notation} % Optional subtitle
+
+        \begin{itemize}
+            \item $ H_{e} $ : set of indices of H side chains in even positions in $ I $
+            \item $ H_{o} $ : set of indices of H side chains in odd positions in $ I $
+            \item $ P_{e} $ : set of indices of P side chains in even positions in $ I $
+            \item $ P_{o} $ : set of indices of H side chains in odd positions in $ I $
+            \item $ I = H_{e} \cup H_{o} \cup P_{e} \cup P_{o} $
+            \item $ L_{e} $ : set of even elements in $ L $ 
+            \item $ L_{o} $ : set of odd elements in $ L $ 
+            \item $ L = L_{e} \cup L_{o} $
+        \end{itemize}
 \end{frame}
 
-%------------------------------------------------
-
 \begin{frame}
-	\frametitle{Theorem, Corollary \& Proof}
-	
-	\begin{theorem}[Mass--energy equivalence]
-		$E = mc^2$
-	\end{theorem}
-	
-	\begin{corollary}
-		$x + y = y + x$
-	\end{corollary}
-	
-	\begin{proof}
-		$\omega + \phi = \epsilon$
-	\end{proof}
+	\frametitle{3D Formulation}
+        \framesubtitle{Notation} % Optional subtitle
+
+        \begin{itemize}
+            \item $ N(v) $ : set of adjacent vertices to v in the lattice
+            \item The vertices of the lattice are enumerated so that the neighbourhood of an even vertex are all odd vertices and viceversa
+            \item $ E $ : set of feasible edges $ (v,w) $ such that $ v \in L_{o} $ and $ w \in L_{e} $, $ w \in N(v) $
+            \item $ F $ : set of feasible edges $ (v,w) $ such that $ v \in L_{e} $ and $ w \in L_{o} $, $ w \in N(v) $
+            \item $ \varepsilon_{hh} $ : energy of interaction between two H side chains, we can set $ \varepsilon_{hh} = 1 $
+        \end{itemize}
 \end{frame}
 
-%------------------------------------------------
+\begin{frame}
+	\frametitle{3D Formulation}
+        \framesubtitle{Decision Variables} % Optional subtitle
+
+        $$ x_{iv} =
+            \begin{cases}
+                1 & \text{if backbone $ i $ is placed at lattice node $ v $}\\
+                0 & \text{otherwise}
+            \end{cases}   
+        $$
+        $$ y_{iv} =
+            \begin{cases}
+                1 & \text{if side chain $ i $ is placed at lattice node $ v $}\\
+                0 & \text{otherwise}
+            \end{cases}   
+        $$
+        $$ hh_{(iv)(jw)} =
+            \begin{cases}
+                1 & \text{if contact between H side chains $ i $ and $ j $ on $ (v,w) $}\\
+                0 & \text{otherwise}
+            \end{cases}   
+        $$
+\end{frame}
 
 \begin{frame}
-	\frametitle{Equation}
+	\frametitle{3D Formulation}
+	\framesubtitle{Objective function} % Optional subtitle
 
-	\begin{equation}
-		\cos^3 \theta =\frac{1}{4}\cos\theta+\frac{3}{4}\cos 3\theta
+        \begin{block}{Goal}
+            Maximize the number of non-local hydrophobic side chain contacts in order to find the most stable folding configuration.
+        \end{block}
+
+        \begin{block}{Objective function}
+            $$ max ( \varepsilon_{hh} \sum_{(v,w) \in E} { \sum_{i \in H_{e}} { \sum_{j \in H_{o}} { hh_{(iv)(jw)} } } } ) $$
+        \end{block}
+	    
+\end{frame}
+
+\begin{frame}
+	\frametitle{3D Formulation}
+	\framesubtitle{Constraints} % Optional subtitle
+
+        \setcounter{equation}{0}
+
+        \begin{equation}
+		\sum_{v \in L_{o}}{x_{iv}} = 1 \qquad \forall i \in I_{o}
 	\end{equation}
+        \begin{equation}
+		\sum_{v \in L_{e}}{x_{iv}} = 1 \qquad \forall i \in I_{e}
+	\end{equation}
+        \begin{equation}
+		\sum_{v \in L_{e}}{x_{iv}} = 1 \qquad \forall i \in I_{o}
+	\end{equation}
+        \begin{equation}
+		\sum_{v \in L_{o}}{x_{iv}} = 1 \qquad \forall i \in I_{e}
+	\end{equation}
+	    
 \end{frame}
-
-%------------------------------------------------
-
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-	\frametitle{Verbatim}
-	
-	\begin{example}[Theorem Slide Code]
-		\begin{verbatim}
-			\begin{frame}
-				\frametitle{Theorem}
-				\begin{theorem}[Mass--energy equivalence]
-					$E = mc^2$
-				\end{theorem}
-		\end{frame}\end{verbatim} % Must be on the same line
-	\end{example}
-\end{frame}
-
-%------------------------------------------------
 
 \begin{frame}
-	Slide without title.
+	\frametitle{3D Formulation}
+	\framesubtitle{Constraints} % Optional subtitle
+
+        \begin{equation}
+		\sum_{i \in I_{o}}{x_{iv}} + \sum_{j \in I_{e}}{y_{jv}} \leq 1 \qquad \forall v \in L_{o}
+	\end{equation}
+        \begin{equation}
+		\sum_{i \in I_{e}}{x_{iv}} + \sum_{j \in I_{o}}{y_{jv}} \leq 1 \qquad \forall v \in L_{e}
+	\end{equation}
+        \begin{equation}
+		\sum_{w \in N(v)}{x_{(i+1)w}} \geq x_{iv} \quad \forall i \in I_{o} - \{n\} \quad \forall v \in L_{o}
+	\end{equation}
+        \begin{equation}
+		\sum_{w \in N(v)}{x_{(i+1)w}} \geq x_{iv} \quad \forall i \in I_{e} - \{n\} \quad \forall v \in L_{e}
+	\end{equation}
+	    
+\end{frame}
+
+\begin{frame}
+	\frametitle{3D Formulation}
+	\framesubtitle{Constraints} % Optional subtitle
+
+        \begin{equation}
+		\sum_{w \in N(v)}{y_{iw}} \geq x_{iv} \qquad \forall i \in I_{o} \qquad \forall v \in L_{o}
+	\end{equation}
+        \begin{equation}
+		\sum_{w \in N(v)}{y_{iw}} \geq x_{iv} \qquad \forall i \in I_{e} \qquad \forall v \in L_{e}
+	\end{equation}
+        \begin{equation}
+		\sum_{j \in H_{o}}{hh_{(iv)(jw)}} \leq y_{iv} \qquad \forall i \in H_{e} \qquad \forall (v,w) \in E
+	\end{equation}
+        \begin{equation}
+		\sum_{i \in H_{e}}{hh_{(iv)(jw)}} \leq y_{jw} \qquad \forall j \in H_{o} \qquad \forall (v,w) \in E
+	\end{equation}
+        \begin{equation}
+		x_{iv}, y_{iv}, hh_{(iv)(jw)} \in \{0,1\}
+	\end{equation}
+	    
+\end{frame}
+
+%------------------------------------------------
+
+\subsection{Computational results}
+
+\begin{frame}
+	\frametitle{Computational results}
+
+        
 \end{frame}
 
 %------------------------------------------------
 
 \section{Referencing}
-
-\begin{frame}
-	\frametitle{Citing References}
-	
-	An example of the \texttt{\textbackslash cite} command to cite within the presentation:
-	
-	\bigskip % Vertical whitespace
-	
-	This statement requires citation \cite{p1,p2}.
-\end{frame}
-
-%------------------------------------------------
 
 \begin{frame} % Use [allowframebreaks] to allow automatic splitting across slides if the content is too long
 	\frametitle{References}
@@ -377,47 +593,16 @@
 	\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below, you may need to use multiple columns and/or reduce the font size further if you have many references
 		\footnotesize % Reduce the font size in the bibliography
 		
-		\bibitem[Smith, 2022]{p1}
-			John Smith (2022)
-			\newblock Publication title
-			\newblock \emph{Journal Name} 12(3), 45 -- 678.
+		\bibitem[Vijay Chandru, M.Rammohan Rao, Ganesh Swaminathan, 2002]{p1}
+			Vijay Chandru, M.Rammohan Rao, Ganesh Swaminathan (2002)
+			\newblock Protein Folding on Lattices: An Integer Programming Approach
+			\newblock \emph{IIM Bangalore Research Paper} 199
 			
-		\bibitem[Kennedy, 2023]{p2}
-			Annabelle Kennedy (2023)
-			\newblock Publication title
-			\newblock \emph{Journal Name} 12(3), 45 -- 678.
+		\bibitem[Luiz Fernando Nunes, Lauro Cesar Galvãoa, Heitor Silvério, Lopes, Pablo Moscato, Regina Berretta, 2016]{p2}
+			Luiz Fernando Nunes, Lauro Cesar Galvãoa, Heitor Silvério, Lopes, Pablo Moscato, Regina Berretta (2016)
+			\newblock An integer programming model for protein structure prediction using the 3D-HP side chain model
+			\newblock \emph{Discrete Applied Mathematics} 198, 206-214.
 	\end{thebibliography}
-\end{frame}
-
-%----------------------------------------------------------------------------------------
-%	ACKNOWLEDGMENTS SLIDE
-%----------------------------------------------------------------------------------------
-
-\begin{frame}
-	\frametitle{Acknowledgements}
-	
-	\begin{columns}[t] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-		\begin{column}{0.45\textwidth} % Left column width
-			\textbf{Smith Lab}
-			\begin{itemize}
-				\item Alice Smith
-				\item Devon Brown
-			\end{itemize}
-			\textbf{Cook Lab}
-			\begin{itemize}
-				\item Margaret
-				\item Jennifer
-				\item Yuan
-			\end{itemize}
-		\end{column}		
-		\begin{column}{0.5\textwidth} % Right column width
-			\textbf{Funding}
-			\begin{itemize}
-				\item British Royal Navy
-				\item Norwegian Government
-			\end{itemize}
-		\end{column}
-	\end{columns}
 \end{frame}
 
 %----------------------------------------------------------------------------------------
