@@ -21,23 +21,25 @@ def get_HP_indices(seq, polarity, parity):
             indices.append(idx)
     return indices
 
-def get_feasible_set(m, n, l_size):
-    E = []
+def are_neighbours(v, w, l_size):
     l2 = l_size*l_size
+    return ((w == v-1 and (w+1)%l_size != 0) or (w == v+1 and w%l_size != 0) or (w == v-l_size and w // l2 == v // l2) or (w == v+l_size and w // l2 == v // l2) or w == v+l2 or w == v-l2)
+
+def get_feasible_set(m, l_size):
+    E = []
     for v in range(m):
-        for w in range(m):
-            #if w == v-1 or w == v+1 or w == v-n or w == v+n:
-            if (w == v-1 and (w+1)%l_size != 0) or (w == v+1 and w%l_size != 0) or (w == v-l_size and w // l2 == v // l2) or (w == v+l_size and w // l2 == v // l2) or w == v+l2 or w == v-l2:
-                E.append((v,w))
+        if v % 2 == 1:
+            for w in range(m):
+                if are_neighbours(v, w, l_size):
+                    E.append((v,w))
     return E
 
 def neighboring_set_3d(v, l_size):
     lattice_size = l_size*l_size*l_size
-    l2 = l_size*l_size
     n_set = []
 
     for k in range(lattice_size):
-        if (k == v-1 and (k+1)%l_size != 0) or (k == v+1 and k%l_size != 0) or (k == v-l_size and k // l2 == v // l2) or (k == v+l_size and k // l2 == v // l2) or k == v+l2 or k == v-l2 :
+        if are_neighbours(v, k, l_size) :
             n_set.append(k)
     
     return n_set
