@@ -63,10 +63,8 @@ def is_adjacent(i, j, u, v):
 def distance(i, j, u, v):
     return ( abs(u - i) + abs(v - j) )
 
-def build_graph(binary_seq, grid_size):
+def build_graph(grid_size):
     G = nx.Graph()
-
-    n = len(binary_seq)
 
     # add nodes
     for i in range(grid_size):
@@ -104,4 +102,14 @@ def grid_positions_from_optimal(x):
             for j in range(len(x[k][i])):
                 if x[k][i][j] == 1:
                     positions.append((i, j))
+    return positions
+
+def grid_positions_from_optimal_reduced(x, n):
+    positions = []
+    p = int(n/2)
+    for k in range(len(x)):
+        for i in range(len(x[k])):
+            for j in range(len(x[k][i])):
+                if x[k][i][j] == 1:
+                    positions.append((i+p, j+p))
     return positions

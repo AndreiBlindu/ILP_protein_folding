@@ -357,17 +357,27 @@
 	    
 \end{frame}
 
-%------------------------------------------------
-
-\subsection{Computational results}
-
 \begin{frame}
-	\frametitle{Computational results}
-	
-	
-\end{frame}
+	\frametitle{2D Formulation}
+	\framesubtitle{Additional constraints}
 
-%------------------------------------------------
+        Comparison w/ and w/o additional constraints
+
+        \begin{minipage}{0.45\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/no_add_constr_plot.png}
+            \includegraphics[width=0.2\textwidth]{Images/no_add_constr_time.png}
+            \includegraphics[width=1\textwidth]{Images/no_add_constr_rows.png}
+            \includegraphics[width=0.8\textwidth]{Images/no_add_constr_optimal.png}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}{0.45\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/add_constr_plot.png}
+            \includegraphics[width=0.2\textwidth]{Images/add_constr_time.png}
+            \includegraphics[width=1\textwidth]{Images/add_constr_rows.png}
+            \includegraphics[width=0.8\textwidth]{Images/add_constr_optimal.png}
+        \end{minipage}%
+	    
+\end{frame}
 
 %------------------------------------------------
 
@@ -406,7 +416,29 @@
 \begin{frame}
 	\frametitle{Model comparison}
 	
-	
+	\begin{minipage}{0.33\linewidth}
+            \text{First formulation}\par\medskip
+	    \includegraphics[width=1\textwidth]{Images/no_add_constr_plot.png}
+            \includegraphics[width=0.6\textwidth]{Images/og_time_dim.png}
+            \includegraphics[width=1\textwidth]{Images/no_add_constr_rows.png}
+            \includegraphics[width=0.8\textwidth]{Images/no_add_constr_optimal.png}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}{0.33\linewidth}
+            \text{Reduced grid}\par\medskip
+	    \includegraphics[width=1\textwidth]{Images/reduced_plot.png}
+            \includegraphics[width=0.6\textwidth]{Images/reduced_time_dim.png}
+            \includegraphics[width=1\textwidth]{Images/reduced_rows.png}
+            \includegraphics[width=0.8\textwidth]{Images/reduced_optimal.png}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}{0.33\linewidth}
+            \text{Alternative formulation}\par\medskip
+	    \includegraphics[width=1\textwidth]{Images/alternative_plot.png}
+            \includegraphics[width=0.6\textwidth]{Images/alternative_time_dim.png}
+            \includegraphics[width=1\textwidth]{Images/alternative_rows.png}
+            \includegraphics[width=0.8\textwidth]{Images/alternative_optimal.png}
+        \end{minipage}%
 \end{frame}
 
 %------------------------------------------------
@@ -427,6 +459,9 @@
         \end{itemize}
         \end{minipage}%
         \hfill
+        \begin{minipage}{0.45\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/3D-HP.png}
+        \end{minipage}%
 \end{frame}
 
 \begin{frame}
@@ -580,6 +615,86 @@
 \begin{frame}
 	\frametitle{Computational results}
 
+        \begin{table}[h!]
+        \centering
+            \begin{tabular}{||c c c||} 
+                \hline
+                Instance & N contacts (CPLEX) & Lattice dimensions \\ [0.5ex] 
+                \hline\hline
+                Dill.1 & 22 & 5×5×5 \\
+                Unger273d.1 & 13 & 5×5×5 \\ 
+                Unger273d.2 & 13 & 5×5×5 \\
+                Unger273d.3 & 13 & 5×5×5 \\
+                Unger273d.4 & 22 & 5×5×5 \\ 
+                Unger273d.5 & 13 & 5×5×5 \\ 
+                Unger273d.8 & 6 & 5x5x5 \\
+                Unger273d.9 & 10 & 5×5×5 \\ 
+                Unger273d.10 & 15 & 5×5×5 \\ [1ex]
+                \hline
+            \end{tabular}
+            \caption{Results from the paper.}
+            \label{table:1}
+        \end{table}
+        
+\end{frame}
+
+\begin{frame}
+	\frametitle{Computational results}
+
+        \begin{minipage}{0.33\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/Dill.1_plot.png}
+            \includegraphics[width=1\textwidth]{Images/Dill.1_optimal.png}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}{0.33\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/Unger273d.1_plot.png}
+            \includegraphics[width=1\textwidth]{Images/Unger273d.1_optimal.png}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}{0.33\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/Unger273d.2_plot.png}
+            \includegraphics[width=1\textwidth]{Images/Unger273d.2_optimal.png}
+        \end{minipage}%
+        
+\end{frame}
+
+\begin{frame}
+	\frametitle{Computational results}
+
+        \begin{minipage}{0.33\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/Unger273d.3_plot.png}
+            \includegraphics[width=1\textwidth]{Images/Unger273d.3_optimal.png}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}{0.33\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/Unger273d.4_plot.png}
+            \includegraphics[width=1\textwidth]{Images/Unger273d.4_optimal.png}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}{0.33\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/Unger273d.5_plot.png}
+            \includegraphics[width=1\textwidth]{Images/Unger273d.5_optimal.png}
+        \end{minipage}%
+        
+\end{frame}
+
+\begin{frame}
+	\frametitle{Computational results}
+
+        \begin{minipage}{0.33\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/Unger273d.8_plot.png}
+            \includegraphics[width=1\textwidth]{Images/Unger273d.8_optimal.png}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}{0.33\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/Unger273d.9_plot.png}
+            \includegraphics[width=1\textwidth]{Images/Unger273d.9_optimal.png}
+        \end{minipage}%
+        \hfill
+        \begin{minipage}{0.33\linewidth}
+	    \includegraphics[width=1\textwidth]{Images/Unger273d.10_plot.png}
+            \includegraphics[width=1\textwidth]{Images/Unger273d.10_optimal.png}
+        \end{minipage}%
         
 \end{frame}
 
