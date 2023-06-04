@@ -148,7 +148,7 @@
 
 \institute[UC] {Università degli studi di Pavia} % Your institution, the optional parameter can be used for the institution shorthand and will appear on the bottom of every slide after author names, while the required parameter is used on the title slide and can include your email address or additional information on separate lines
 
-\date[\today]{Final project Operations Research \\6 June 2023 } % Presentation date or conference/meeting name, the optional parameter can contain a shortened version to appear on the bottom of every slide, while the required parameter value is output to the title slide
+\date[\today]{Final project Operations Research \\June 2023 } % Presentation date or conference/meeting name, the optional parameter can contain a shortened version to appear on the bottom of every slide, while the required parameter value is output to the title slide
 
 %----------------------------------------------------------------------------------------
 
@@ -364,7 +364,7 @@
 	\frametitle{2D Formulation}
 	\framesubtitle{Additional constraints}
 
-        Comparison w/ and w/o additional constraints
+        Comparison without and with additional constraints
 
         \begin{minipage}{0.45\linewidth}
 	    \includegraphics[width=1\textwidth]{Images/no_add_constr_plot.png}
@@ -392,7 +392,7 @@
         A method to reduce the number of variables and speedup the computation is to reduce the size of the grid by considering a grid of vertices $ (i,j) $ such that  
         $$ n-p \leq i \leq 2n-1 \quad\text{and}\quad n-p \leq j \leq n+p \quad\text{where}\quad p = \frac{n}{2} $$
         Since we know that $ s_{1} $ is placed at vertex $ (n,n) $ and all vertices having $ d_{nn}^{uv} > n $ can be removed from the grid. \\
-        As shown later, this actually reduces the number of variables and the computational time. 
+        As shown later, this can reduce the number of variables and the computational time. 
 	
 \end{frame}
 
@@ -456,7 +456,7 @@
 
         \begin{minipage}{0.45\linewidth}
         \begin{itemize}
-            \item In the 3D-HP model each amino acid has a backbone and a side chain
+            \item In the 3D-HP model each amino acid has a backbone and a side chain (H or P)
             \item All elements occupy only one position in a cubic lattice
             \item The side chain is positioned in the neighbourhood of its backbone
         \end{itemize}
@@ -490,7 +490,7 @@
             \item $ H_{e} $ : set of indices of H side chains in even positions in $ I $
             \item $ H_{o} $ : set of indices of H side chains in odd positions in $ I $
             \item $ P_{e} $ : set of indices of P side chains in even positions in $ I $
-            \item $ P_{o} $ : set of indices of H side chains in odd positions in $ I $
+            \item $ P_{o} $ : set of indices of P side chains in odd positions in $ I $
             \item $ I = H_{e} \cup H_{o} \cup P_{e} \cup P_{o} $
             \item $ L_{e} $ : set of even elements in $ L $ 
             \item $ L_{o} $ : set of odd elements in $ L $ 
@@ -506,7 +506,6 @@
             \item $ N(v) $ : set of adjacent vertices to v in the lattice
             \item The vertices of the lattice are enumerated so that the neighbourhood of an even vertex are all odd vertices and viceversa
             \item $ E $ : set of feasible edges $ (v,w) $ such that $ v \in L_{o} $ and $ w \in L_{e} $, $ w \in N(v) $
-            \item $ F $ : set of feasible edges $ (v,w) $ such that $ v \in L_{e} $ and $ w \in L_{o} $, $ w \in N(v) $
             \item $ \varepsilon_{hh} $ : energy of interaction between two H side chains, we can set $ \varepsilon_{hh} = 1 $
         \end{itemize}
 \end{frame}
@@ -562,10 +561,10 @@
 		\sum_{v \in L_{e}}{x_{iv}} = 1 \qquad \forall i \in I_{e}
 	\end{equation}
         \begin{equation}
-		\sum_{v \in L_{e}}{x_{iv}} = 1 \qquad \forall i \in I_{o}
+		\sum_{v \in L_{e}}{y_{iv}} = 1 \qquad \forall i \in I_{o}
 	\end{equation}
         \begin{equation}
-		\sum_{v \in L_{o}}{x_{iv}} = 1 \qquad \forall i \in I_{e}
+		\sum_{v \in L_{o}}{y_{iv}} = 1 \qquad \forall i \in I_{e}
 	\end{equation}
 	    
 \end{frame}
